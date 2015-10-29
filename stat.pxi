@@ -16,4 +16,4 @@
               (catch e (println e))))))
         (uv/uv_fs_stat (uv/uv_default_loop) (uv/uv_fs_t) args @cb)))))
 
-(fsstat "Makefile" prn)
+(fsstat "Makefile" #(prn (:statbuf.st_size %)))
