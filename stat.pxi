@@ -2,8 +2,8 @@
   (require pixie.ffi :as ffi)
   (require pixie.uv :as uv))
 
-;;(uv/defuvfsfn fs_stat args cb)
-;;(fs_stat ["Makefile"] prn)
+(uv/defuvfsfn fs_stat [args] #(prn "statbuf" (:statbuf.st_size %)))
+(fs_stat "Makefile")
 
 (defn fsstat [args return]
   (pixie.stacklets/call-cc (fn [k]
@@ -16,4 +16,4 @@
               (catch e (println e))))))
         (uv/uv_fs_stat (uv/uv_default_loop) (uv/uv_fs_t) args @cb)))))
 
-(fsstat "Makefile" #(prn (:statbuf.st_size %)))
+;;(fsstat "Makefile" #(prn (:statbuf.st_size %)))
