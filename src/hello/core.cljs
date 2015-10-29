@@ -3,7 +3,10 @@
 
 (nodejs/enable-util-print!)
 
+(def fs (nodejs/require "fs"))
+
 (defn -main [& args]
-  (println "Hello world!"))
+  (println "Hello world!")
+  (println (.readFileSync fs "Makefile" "utf8")))
 
 (set! *main-cli-fn* -main)
