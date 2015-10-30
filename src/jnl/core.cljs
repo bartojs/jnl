@@ -14,8 +14,10 @@
     (conj result (str (.trim line) "\n"))
     (update-in result [(dec (count result))] str "| " (.trim line) "\n")))
 
-(defn has-tags? [tags]
-  (fn [entry] (apply or (map #(>= (.indexOf entry %) 0) tags))))
+(defn filter-entries [entries tags]
+  (filter 
+    (fn [entry] (not (empty? (filter #(> (.indexOf entry %) -1) tags))))
+    entries))
 
 (defn -main [& args]
   (doseq [arg (.-argv process)] (println "arg=" arg))
@@ -23,7 +25,7 @@
         jrnl (.readFileSync fs (aget cfg "journals" "default") "utf8")
         entries (reduce process-line [] (string/split-lines jrnl))]
     (println (sort-by #(subs % 0 16) (if-let [tags (seq (drop 2 (.-argv process)))]
-                                       (filter #(>= (.indexOf % (first tags)) 0) entries)
+                                       (filter-entries entries tags) 
                                        entries)))))
 
 (set! *main-cli-fn* -main)
