@@ -14,11 +14,16 @@
     (conj result (str (.trim line) "\n"))
     (update-in result [(dec (count result))] str "| " (.trim line) "\n")))
 
+(defn has-tags? [tags]
+  (fn [entry] (apply or (map #(>= (.indexOf entry %) 0) tags))))
+
 (defn -main [& args]
   (doseq [arg (.-argv process)] (println "arg=" arg))
   (let [cfg (.parse js/JSON (.readFileSync fs (.join path home ".jnl_config") "utf8"))
         jrnl (.readFileSync fs (aget cfg "journals" "default") "utf8")
         entries (reduce process-line [] (string/split-lines jrnl))]
-    (println (sort-by #(subs % 0 16) entries))))
+    (println (sort-by #(subs % 0 16) (if-let [tags (seq (drop 2 (.-argv process)))]
+                                       (filter #(>= (.indexOf % (first tags)) 0) entries)
+                                       entries)))))
 
 (set! *main-cli-fn* -main)
