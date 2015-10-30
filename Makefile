@@ -6,3 +6,9 @@ cljs.jar:
 
 run:
 	time node main.js
+
+runclj:
+	time java -cp cljs.jar clojure.main cat.clj
+
+runpxi:
+	time pxi stat.pxi
