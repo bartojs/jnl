@@ -1,5 +1,6 @@
-(ns hello.core
+(ns jnl.core 
   (:require [cljs.nodejs :as nodejs]))
+
 (nodejs/enable-util-print!)
 (def fs (nodejs/require "fs"))
 (def process nodejs/process)

@@ -8,7 +8,7 @@ run:
 	time node main.js
 
 runclj:
-	time java -cp cljs.jar clojure.main cat.clj
+	time java -cp cljs.jar clojure.main src/jnl/core.clj
 
 runpxi:
 	time pxi stat.pxi
